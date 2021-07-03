@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
--- http://www.phpmyadmin.net
+-- version 5.0.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2021 at 11:36 AM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Jul 04, 2021 at 12:47 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,27 +27,41 @@ SET time_zone = "+00:00";
 -- Table structure for table `application`
 --
 
-CREATE TABLE IF NOT EXISTS `application` (
+CREATE TABLE `application` (
   `appid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `jobid` int(11) NOT NULL,
   `cv` varchar(1000) NOT NULL,
   `date` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `application`
 --
 
 INSERT INTO `application` (`appid`, `userid`, `jobid`, `cv`, `date`) VALUES
-(1, 2, 4, 'M AQIB .NET.pdf', '2020-11-27'),
-(2, 4, 4, 'Muhammad Aqib .NET.pdf', '2020-11-28'),
-(3, 4, 3, 'Muhammad Aqib .NET.pdf', '2027-11-20'),
-(4, 4, 3, 'M AQIB .NET.pdf', '2028-11-20'),
-(5, 5, 7, 'bg9.jpg', '2028-11-20'),
-(6, 5, 3, '01.jpg', '2028-11-20'),
-(7, 6, 4, 'Asim CV (2).pdf', '2002-01-21'),
-(8, 8, 3, 'Al Quran Online Academy.pdf', '2005-01-21');
+(1, 2, 2, 'HTML5 & CSS3 The Complete Manual 2014.pdf', '2004-07-21'),
+(2, 2, 3, 'Windows Forms App.pdf', '2004-07-21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `catid` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`catid`, `name`) VALUES
+(1, 'Front End'),
+(2, 'Back End'),
+(3, 'Android Development');
 
 -- --------------------------------------------------------
 
@@ -54,13 +69,13 @@ INSERT INTO `application` (`appid`, `userid`, `jobid`, `cv`, `date`) VALUES
 -- Table structure for table `employer`
 --
 
-CREATE TABLE IF NOT EXISTS `employer` (
+CREATE TABLE `employer` (
   `empid` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `type` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employer`
@@ -76,26 +91,25 @@ INSERT INTO `employer` (`empid`, `name`, `email`, `password`, `type`) VALUES
 -- Table structure for table `jobs`
 --
 
-CREATE TABLE IF NOT EXISTS `jobs` (
+CREATE TABLE `jobs` (
   `jobid` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
-  `categories` varchar(50) NOT NULL,
+  `catid` int(11) NOT NULL,
   `description` varchar(50) NOT NULL,
   `salary` varchar(50) NOT NULL,
   `timing` varchar(50) NOT NULL,
   `location` varchar(50) NOT NULL,
   `empid` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `jobs`
 --
 
-INSERT INTO `jobs` (`jobid`, `title`, `categories`, `description`, `salary`, `timing`, `location`, `empid`) VALUES
-(3, 'php developer', 'ui/ux', 'intermediate level', '30000', '8 to 6pm', 'karachi', 2),
-(4, 'C#', 'asp.net', 'intermediate level', '40000', '8 to 6pm', 'lahore', 2),
-(6, 'graphic intern', 'graphic designer', 'adobe illustrator, photoshop etc', '30000', '8 to 6pm', 'karachi', 2),
-(7, 'Manager', 'admin', 'Phd', '20000', '9am to 9pm', 'landhi , khuramabad', 3);
+INSERT INTO `jobs` (`jobid`, `title`, `catid`, `description`, `salary`, `timing`, `location`, `empid`) VALUES
+(1, 'Front end Designer', 1, 'front designing, ui/ux etc', '20000', '11 to 1', 'Karachi, Pakistan', 2),
+(2, 'Android developer', 3, 'java, xml, ui/ux, kotlin would be plus ', '25000', '3 to 5 ', 'Karachi, Pakistan', 2),
+(3, 'Asp.net developer', 2, 'asp.net mvc, rest api, angular would be plus', '35000', '9 to 5 ', 'Karachi, Pakistan', 2);
 
 -- --------------------------------------------------------
 
@@ -103,7 +117,7 @@ INSERT INTO `jobs` (`jobid`, `title`, `categories`, `description`, `salary`, `ti
 -- Table structure for table `profile`
 --
 
-CREATE TABLE IF NOT EXISTS `profile` (
+CREATE TABLE `profile` (
   `profileid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   `qulification` varchar(50) NOT NULL,
@@ -116,13 +130,13 @@ CREATE TABLE IF NOT EXISTS `profile` (
 -- Table structure for table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `userid` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `type` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -146,6 +160,12 @@ INSERT INTO `user` (`userid`, `name`, `email`, `password`, `type`) VALUES
 ALTER TABLE `application`
   ADD PRIMARY KEY (`appid`),
   ADD KEY `FK_application` (`userid`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`catid`);
 
 --
 -- Indexes for table `employer`
@@ -181,27 +201,38 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `appid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `appid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `catid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `employer`
 --
 ALTER TABLE `employer`
-  MODIFY `empid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `empid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `jobid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `jobid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
   MODIFY `profileid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- Constraints for dumped tables
 --
@@ -211,6 +242,7 @@ ALTER TABLE `user`
 --
 ALTER TABLE `application`
   ADD CONSTRAINT `FK_application` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

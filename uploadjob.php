@@ -42,15 +42,24 @@
                    </div>
 
                    <div class="form-group">
-                   <input type="text" placeholder="enter a categories" name="categories" class="form-control">  
-                   <!-- <select name="categories" id="" class="form-control">
+                   <!-- <input type="text" placeholder="enter a categories" name="categories" class="form-control">   -->
+                   <select name="catid"  class="form-control">
                         <option value="">Select Categories</option>
-                        <option value="Data Entry">Data Entry</option>
-                        <option value="Web Development">Web Development</option>
-                        <option value="UI/UX">UI/UX</option>
-                        <option value="Graphic Design">Graphic Design</option>
+                        <?php
 
-                   </select> -->
+                              $sql = "select * from categories";
+                              $data = mysqli_query($con,$sql);
+                              if(mysqli_num_rows( $data) > 0){
+                                    while($rs=mysqli_fetch_array($data)){
+                                         ?><option value="<?=$rs['catid']?>"><?= $rs['name']?></option><?php
+                                    }
+                              }else{
+                                   ?><option>No category found</option><?php
+                              }
+
+                        ?>
+
+                   </select>
                    </div>
 
 
@@ -100,9 +109,10 @@
                       <tbody id="mytable">
                            <?php
                               
-                              $sql = "select jobs.*, employer.name
+                              $sql = "select jobs.*, employer.name, categories.name as 'categories'
                               from jobs
                               inner join employer on employer.empid = jobs.empid
+                              inner join  categories on categories.catid = jobs.catid
                               where jobs.empid = '$empid';
                               ";
                               $rs = mysqli_query($con,$sql);
@@ -146,13 +156,14 @@
 
 
             $name = $_POST['name'];
-            $categories = $_POST['categories'];
+          //   $categories = $_POST['categories'];
+            $catid = $_POST['catid'];
             $desc = $_POST['desc'];
             $salary = $_POST['salary'];
             $timing = $_POST['timing'];
             $location = $_POST['location'];
 
-           $sql = "INSERT INTO `jobs`( `title`, `categories`, `description`, `salary`, `timing`, `location`, `empid`) VALUES ('$name', '$categories', '$desc','$salary','$timing','$location','$empid')";
+           $sql = "INSERT INTO `jobs`( `title`, `catid`, `description`, `salary`, `timing`, `location`, `empid`) VALUES ('$name', '$catid', '$desc','$salary','$timing','$location','$empid')";
            mysqli_query($con,$sql);
            
         

@@ -23,6 +23,7 @@
 						  if($type == 1){
 							  echo '
 							  <li><a href="admin.php">Dashboard</a></li>
+							  <li><a href="categories.php">Categories</a></li>
 							  <li><a href="uploadjob.php">Jobs</a></li>
 								<li><a href="application.php">View Application</a></li>
 								<li><a href="logout.php">Logout</a></li>
